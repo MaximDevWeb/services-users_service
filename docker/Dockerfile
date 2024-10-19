@@ -13,4 +13,4 @@ WORKDIR /var/www/site
 
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
-RUN composer install
+RUN composer install && chown -R www-data:www-data *
