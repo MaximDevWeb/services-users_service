@@ -1,6 +1,6 @@
-data/db/*
-data/redis/*
-logs/nginx/*.log
-logs/php/*.log
+data/db/
+data/redis/
+logs/nginx/
+logs/php/
 
 

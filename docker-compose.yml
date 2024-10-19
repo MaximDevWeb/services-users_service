@@ -22,7 +22,6 @@ services:
       dockerfile: ./docker/Dockerfile
     container_name: user_php
     volumes:
-      - ./site:/var/www/site
       - ./docker/config/php/php.ini:/usr/local/etc/php/php.ini
       - ./docker/data/logs/php:/var/log/fpm-php.www.log
     networks:
