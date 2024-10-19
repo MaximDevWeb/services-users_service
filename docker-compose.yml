@@ -1,0 +1,60 @@
+version: "3.5"
+
+services:
+  web:
+    image: nginx:alpine
+    container_name: user_web
+    ports:
+      - 2010:80
+    volumes:
+      - ./site:/var/www/site
+      - ./docker/config/nginx:/etc/nginx/conf.d
+      - ./docker/data/logs/nginx:/var/log/nginx/
+    depends_on:
+      - db
+      - server
+      - redis
+    networks:
+      - users
+  server:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    container_name: user_php
+    volumes:
+      - ./site:/var/www/site
+      - ./docker/config/php/php.ini:/usr/local/etc/php/php.ini
+      - ./docker/data/logs/php:/var/log/fpm-php.www.log
+    networks:
+      - users
+  db:
+    image: postgres:alpine
+    container_name: user_db
+    restart: on-failure
+    ports:
+      - 2020:5432
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: root
+      POSTGRES_DB: user_db
+    volumes:
+      - ./docker/data/db:/var/lib/postgresql/data
+    networks:
+      - users
+  redis:
+    image: redis:alpine
+    container_name: user_redis
+    restart: on-failure
+    environment:
+      - REDIS_PASSWORD=password
+      - REDIS_USER=root
+      - REDIS_USER_PASSWORD=password
+    volumes:
+      - ./docker/data/redis:/data
+    networks:
+      - users
+
+networks:
+  users:
+    name: microservices
+    external: true

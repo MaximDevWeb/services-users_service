@@ -1,0 +1,6 @@
+data/db/*
+data/redis/*
+logs/nginx/*.log
+logs/php/*.log
+
+
